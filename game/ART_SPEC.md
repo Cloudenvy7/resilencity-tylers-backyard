@@ -119,7 +119,13 @@ shipped; the engine adapts to whatever frame count exists). **Directions are scr
 convention** — `se` faces down-right on screen, `nw` up-left. The game's tile movement
 uses only the four diagonals; cardinal files ship for future free-movement use. Art is
 used unmirrored, so asymmetric details (tool belt, back logo) stay correct per facing.
-| `stone_a.png`, `stone_b.png` | 24×24 | Stone: small white robotic owl, cyan eyes, wings slightly different per frame (hover) |
+| `stone_a.png`, `stone_b.png` | 24×24 | Stone: small white robotic owl, cyan eyes, wings slightly different per frame (hover) — 2-frame fallback set |
+
+**Stone 8-direction set (preferred; overrides the 2-frame set above when present).**
+Same naming convention as Tyler: `stone_idle_{dir}.png`, `stone_hover_{dir}_{frame}.png`,
+`dir` ∈ n, ne, e, se, s, sw, w, nw, screen convention, 6-frame hover loops shipped. Stone
+always faces the same direction Tyler is facing (`hoverFrameCount()`/hover art keyed to
+`tylerVisual.face4`). Center-anchored (Stone hovers, doesn't stand on the ground line).
 | `grandpa.png`, `grandma.png` | 30×56 | optional porch flavor, static |
 
 ### 3.4 UI glyphs (20×20, single color OK — used on dark panels)

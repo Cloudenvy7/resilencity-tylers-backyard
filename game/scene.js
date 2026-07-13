@@ -145,6 +145,24 @@ function spawnBurst(x, y, color) {
 const tylerVisual = { sx: null, sy: null, step: 0, facing: "e", face4: "se", lastX: undefined, lastY: undefined };
 let owlBob = 0;
 
+/* Stone the owl: prefers 8-dir art matching Tyler's facing (no mirroring —
+ * the wing-panel gear stays on the correct side), falls back to the
+ * direction-agnostic 2-frame hover, then the procedural fallback. */
+function drawOwl(ctx, dir, ox, oy) {
+  let owlImg = null;
+  const nHover = hoverFrameCount(dir);
+  if (nHover > 0) {
+    owlImg = sprite("stone_hover_" + dir, Math.floor(owlBob * 3) % nHover);
+  }
+  if (!owlImg) owlImg = sprite("stone_idle_" + dir);
+  if (!owlImg) owlImg = sprite("stone", Math.floor(owlBob * 2) % 2);
+  if (owlImg) {
+    ctx.drawImage(owlImg, ox - owlImg.width / 2, oy - owlImg.height / 2);
+    return;
+  }
+  drawOwlFallback(ctx, ox, oy);
+}
+
 function drawOwlFallback(ctx, ox, oy) {
   ctx.fillStyle = "#d8d4c8";
   ctx.beginPath(); ctx.ellipse(ox, oy, 6, 7, 0, 0, Math.PI * 2); ctx.fill();
@@ -622,14 +640,8 @@ function drawScene(ctx, state, ui) {
         if (mirror) { ctx.translate(sx, 0); ctx.scale(-1, 1); ctx.translate(-sx, 0); }
         ctx.drawImage(tylerImg, sx - tylerImg.width / 2, sy - tylerImg.height - bob);
         ctx.restore();
-        // Stone the owl (sprite or fallback drawn below needs the same anchor)
-        const owlImg = sprite("stone", Math.floor(owlBob * 2) % 2);
-        const ox = sx + 16, oy = sy - 34 + Math.sin(owlBob) * 3;
-        if (owlImg) {
-          ctx.drawImage(owlImg, ox - owlImg.width / 2, oy - owlImg.height / 2);
-          return;
-        }
-        drawOwlFallback(ctx, ox, oy);
+        // Stone the owl, hovering at Tyler's shoulder, facing the same direction
+        drawOwl(ctx, dir, sx + 16, sy - 34 + Math.sin(owlBob) * 3);
         return;
       }
       // hoodie (green, from the art)
@@ -656,11 +668,8 @@ function drawScene(ctx, state, ui) {
           ctx.stroke();
         }
       }
-      // Stone the owl, hovering at Tyler's shoulder
-      const ox = sx + 16, oy = sy - 34 + Math.sin(owlBob) * 3;
-      const owlImg2 = sprite("stone", Math.floor(owlBob * 2) % 2);
-      if (owlImg2) ctx.drawImage(owlImg2, ox - owlImg2.width / 2, oy - owlImg2.height / 2);
-      else drawOwlFallback(ctx, ox, oy);
+      // Stone the owl, hovering at Tyler's shoulder, facing the same direction
+      drawOwl(ctx, dir, sx + 16, sy - 34 + Math.sin(owlBob) * 3);
     },
   });
 

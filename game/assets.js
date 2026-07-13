@@ -75,6 +75,14 @@ TYLER_DIRS.forEach((d) => {
   }
 });
 
+// 8-direction Stone owl set — same convention, hovers rather than walks.
+TYLER_DIRS.forEach((d) => {
+  SPRITE_MANIFEST["stone_idle_" + d] = "stone_idle_" + d + ".png";
+  for (let f = 0; f < 6; f++) {
+    SPRITE_MANIFEST["stone_hover_" + d + "_" + f] = "stone_hover_" + d + "_" + f + ".png";
+  }
+});
+
 const _spriteCache = {}; // name -> Image (only successfully loaded ones)
 
 (function loadSprites() {
@@ -95,8 +103,8 @@ const _spriteCache = {}; // name -> Image (only successfully loaded ones)
 })();
 
 function sprite(name, frame) {
-  // 8-dir walk sets resolve "tyler_walk_{dir}" + numeric frame
-  if (frame !== undefined && name.startsWith("tyler_walk_") ) {
+  // 8-dir walk/hover sets resolve "tyler_walk_{dir}" / "stone_hover_{dir}" + numeric frame
+  if (frame !== undefined && (name.startsWith("tyler_walk_") || name.startsWith("stone_hover_"))) {
     return _spriteCache[name + "_" + frame] || null;
   }
   if (frame === 1) {
@@ -112,11 +120,21 @@ function sprite(name, frame) {
   return _spriteCache[name] || null;
 }
 
+/* Count loaded numbered frames for a "{prefix}_{n}" family (0 = none loaded). */
+function countFrames(prefix) {
+  let n = 0;
+  while (_spriteCache[prefix + "_" + n]) n++;
+  return n;
+}
+
 /* Number of loaded walk frames for a direction (0 = no 8-dir set for it). */
 function walkFrameCount(dir) {
-  let n = 0;
-  while (_spriteCache["tyler_walk_" + dir + "_" + n]) n++;
-  return n;
+  return countFrames("tyler_walk_" + dir);
+}
+
+/* Number of loaded hover frames for Stone in a direction. */
+function hoverFrameCount(dir) {
+  return countFrames("stone_hover_" + dir);
 }
 
 /* Draw a sprite standing on the ground-line anchor of tile (x,y):
@@ -141,5 +159,5 @@ function drawSpriteOr(ctx, name, frame, x, y, fallbackFn, opts) {
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { SPRITE_MANIFEST, sprite, drawSpriteOr, walkFrameCount };
+  module.exports = { SPRITE_MANIFEST, sprite, drawSpriteOr, walkFrameCount, hoverFrameCount };
 }
