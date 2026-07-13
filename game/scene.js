@@ -577,8 +577,11 @@ function drawScene(ctx, state, ui) {
   const bob = moving ? Math.abs(Math.sin(tylerVisual.step)) * 3 : 0;
   owlBob += 0.06;
 
+  // continuous interpolated depth (from Antigravity's build): sorts Tyler by his
+  // on-screen position while walking, so he doesn't pop in front of/behind
+  // objects at tile boundaries. (sy-ORIGIN_Y)/(TILE_H/2) recovers x+y in tile units.
   drawables.push({
-    depth: state.tyler.x + state.tyler.y + 0.5,
+    depth: (tylerVisual.sy - ORIGIN_Y) / (TILE_H / 2) + 0.5,
     draw: () => {
       const sx = tylerVisual.sx, sy = tylerVisual.sy + TILE_H / 2;
       ctx.fillStyle = "rgba(0,0,0,0.35)";
