@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resilencity: Tyler's Backyard — Sprint 2 Prototype</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Resilencity: Tyler's Backyard</h1>
+    <div id="dayCounter">Day 1 / 12</div>
+    <div id="clockWrap"><div id="clockFill"></div><span id="clockLabel">morning</span></div>
+    <div id="staminaBar"><div id="staminaFill"></div><span id="staminaLabel"></span></div>
+  </header>
+
+  <div id="crisisBanner" class="hidden"></div>
+
+  <main>
+    <section id="sceneWrap">
+      <canvas id="scene" width="960" height="520"></canvas>
+      <div id="toolbar">
+        <button class="tool active" data-tool="walk" title="Click the yard to walk. Click machines to load them.">🚶 Walk / Use</button>
+        <button id="btnDumpTrip" title="Head up the block to the dump. A crap shoot until the community organizes it.">🧺 Dump Trip</button>
+        <button id="btnShare" title="Share 2 food over the fence. The block remembers — and starts organizing the dump.">🤝 Share Food</button>
+        <button class="tool" data-tool="wire" title="1 bottle each. Wires carry power between things.">➰ Wire</button>
+        <button class="tool" data-tool="solar" title="4 bottles. Makes power in daylight.">☀ Solar</button>
+        <button class="tool" data-tool="battery" title="3 bottles. Stores power for night.">🔋 Battery</button>
+        <button class="tool" data-tool="polyformer" title="3 bottles. Bottles → filament. Needs power.">♻ Polyformer</button>
+        <button class="tool" data-tool="printer" title="3 bottles. Filament → parts. Needs power.">🖨 Printer</button>
+        <button class="tool" data-tool="farmbot" title="1 printed part. Water + seed → food. Needs power.">🌱 FarmBot</button>
+        <button class="tool" data-tool="composter" title="2 bottles. Waste → soil. Closes the loop.">🪱 Composter</button>
+        <button id="btnRounds" title="Load every ready machine at once — no walking, no clicking each one.">🔁 Do Rounds</button>
+        <button id="btnSleep" class="primary" title="End the day. Machines keep running on battery.">🌙 Sleep</button>
+      </div>
+      <div id="hint"></div>
+    </section>
+
+    <aside id="stonePanel">
+      <h2>Stone — Dashboard</h2>
+      <h3>The Plan</h3>
+      <ol id="objectives"></ol>
+      <div id="gauges"></div>
+      <p id="advice"></p>
+      <h3>Log</h3>
+      <ul id="log"></ul>
+    </aside>
+  </main>
+
+  <div id="triPathModal" class="hidden">
+    <div class="modal-card">
+      <h2 id="triPathTitle">Build a machine</h2>
+      <p>Stone offers three ways to build it:</p>
+      <div class="tri-path-options">
+        <button class="path-btn" data-path="hack">
+          <strong>Scrap-Yard Hack</strong>
+          <span>5 stamina · fast, but 25% of cycles misfire</span>
+        </button>
+        <button class="path-btn" data-path="ancestral">
+          <strong>Ancestral Method</strong>
+          <span>8 stamina · never fails, gentler yields (×0.75)</span>
+        </button>
+        <button class="path-btn" data-path="compliant">
+          <strong>Code-Compliant Build</strong>
+          <span>12 stamina · never fails, full yields</span>
+        </button>
+      </div>
+      <button id="btnCancelPath" class="secondary">Cancel</button>
+    </div>
+  </div>
+
+  <div id="endScreen" class="hidden">
+    <div class="modal-card">
+      <h2 id="endTitle"></h2>
+      <p id="endBody"></p>
+      <button id="btnRestart" class="primary">Play Again</button>
+    </div>
+  </div>
+
+  <script src="engine.js?v=7"></script>
+  <script src="stone.js?v=7"></script>
+  <script src="assets.js?v=7"></script>
+  <script src="scene.js?v=7"></script>
+  <script src="app.js?v=7"></script>
+</body>
+</html>
