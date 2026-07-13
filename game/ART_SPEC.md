@@ -110,6 +110,15 @@ between frames.
 | `tyler_work_a.png`, `tyler_work_b.png` | 46×70 | engineer pose reaching toward the machine, with the green "SYSTEM ONLINE" holographic diagnostic panel cue |
 | `tyler_back_idle.png` | 40×70 | back-¾ view = NW facing (code mirrors for NE). **Blackfox Studios fox mark on the hoodie back** — required. Hood hangs on shoulders. |
 | `tyler_back_walk_a.png`, `tyler_back_walk_b.png` | 40×70 | back walk cycle pair |
+
+**Tyler 8-direction set (preferred; overrides the 2-frame sets above when present).**
+Canon update per the v2 turnaround: goggles worn on the head and tan work boots are
+now part of the design. Naming: `tyler_idle_{dir}.png` and `tyler_walk_{dir}_{frame}.png`
+with `dir` ∈ n, ne, e, se, s, sw, w, nw and frame numbering from 0 (5-frame walk loops
+shipped; the engine adapts to whatever frame count exists). **Directions are screen
+convention** — `se` faces down-right on screen, `nw` up-left. The game's tile movement
+uses only the four diagonals; cardinal files ship for future free-movement use. Art is
+used unmirrored, so asymmetric details (tool belt, back logo) stay correct per facing.
 | `stone_a.png`, `stone_b.png` | 24×24 | Stone: small white robotic owl, cyan eyes, wings slightly different per frame (hover) |
 | `grandpa.png`, `grandma.png` | 30×56 | optional porch flavor, static |
 

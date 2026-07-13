@@ -590,16 +590,34 @@ function drawScene(ctx, state, ui) {
       // sprite path: idle / walk / work frames, W-facing mirrored
       const working = !moving && state.objects.some((o) =>
         o.state === "running" && Math.abs(o.x - state.tyler.x) + Math.abs(o.y - state.tyler.y) === 1);
-      // 4-way: front set covers SE (as-is) and SW (mirrored); back set covers NW/NE.
-      const back = tylerVisual.face4 === "nw" || tylerVisual.face4 === "ne";
+      // 8-dir set first (per-direction art, unmirrored); fallback: front/back
+      // 2-frame set where SE/SW share mirrored front art and NW/NE share back art.
+      const dir = tylerVisual.face4;
+      const back = dir === "nw" || dir === "ne";
       const walkFrame = Math.floor(tylerVisual.step) % 2;
-      const tylerImg = moving
-        ? (back ? sprite("tyler_back_walk", walkFrame) : null) || sprite("tyler_walk", walkFrame)
-        : working
-          ? sprite("tyler_work", runFrame()) // work pose is always front — he faces the machine
-          : (back ? sprite("tyler_back_idle") : null) || sprite("tyler_idle");
+      let tylerImg = null;
+      let mirror = false;
+      if (moving) {
+        const n8 = walkFrameCount(dir);
+        if (n8 > 0) {
+          // slower cadence for the longer loop (~95ms/frame at 60fps walk)
+          tylerImg = sprite("tyler_walk_" + dir, Math.floor(tylerVisual.step * 1.6) % n8);
+        }
+        if (!tylerImg) {
+          tylerImg = (back ? sprite("tyler_back_walk", walkFrame) : null) || sprite("tyler_walk", walkFrame);
+          mirror = dir === "sw" || dir === "ne";
+        }
+      } else if (working) {
+        tylerImg = sprite("tyler_work", runFrame()); // work pose is always front — he faces the machine
+        mirror = dir === "sw" || dir === "ne";
+      } else {
+        tylerImg = sprite("tyler_idle_" + dir);
+        if (!tylerImg) {
+          tylerImg = (back ? sprite("tyler_back_idle") : null) || sprite("tyler_idle");
+          mirror = dir === "sw" || dir === "ne";
+        }
+      }
       if (tylerImg) {
-        const mirror = tylerVisual.face4 === "sw" || tylerVisual.face4 === "ne";
         ctx.save();
         if (mirror) { ctx.translate(sx, 0); ctx.scale(-1, 1); ctx.translate(-sx, 0); }
         ctx.drawImage(tylerImg, sx - tylerImg.width / 2, sy - tylerImg.height - bob);

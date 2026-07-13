@@ -64,6 +64,17 @@ const SPRITE_MANIFEST = {
   grandma: "grandma.png",
 };
 
+// 8-direction Tyler set (per-direction art — no mirroring, so asymmetric
+// details like the tool belt and fox logo stay on the correct side).
+// Directions use screen convention: se = down-right, nw = up-left, etc.
+const TYLER_DIRS = ["n", "ne", "e", "se", "s", "sw", "w", "nw"];
+TYLER_DIRS.forEach((d) => {
+  SPRITE_MANIFEST["tyler_idle_" + d] = "tyler_idle_" + d + ".png";
+  for (let f = 0; f < 6; f++) {
+    SPRITE_MANIFEST["tyler_walk_" + d + "_" + f] = "tyler_walk_" + d + "_" + f + ".png";
+  }
+});
+
 const _spriteCache = {}; // name -> Image (only successfully loaded ones)
 
 (function loadSprites() {
@@ -84,6 +95,10 @@ const _spriteCache = {}; // name -> Image (only successfully loaded ones)
 })();
 
 function sprite(name, frame) {
+  // 8-dir walk sets resolve "tyler_walk_{dir}" + numeric frame
+  if (frame !== undefined && name.startsWith("tyler_walk_") ) {
+    return _spriteCache[name + "_" + frame] || null;
+  }
   if (frame === 1) {
     // 2-frame sets use _a/_b; allow sprite("tyler_walk", 1) style lookups
     const b = _spriteCache[name + "_b"];
@@ -95,6 +110,13 @@ function sprite(name, frame) {
     if (a) return a;
   }
   return _spriteCache[name] || null;
+}
+
+/* Number of loaded walk frames for a direction (0 = no 8-dir set for it). */
+function walkFrameCount(dir) {
+  let n = 0;
+  while (_spriteCache["tyler_walk_" + dir + "_" + n]) n++;
+  return n;
 }
 
 /* Draw a sprite standing on the ground-line anchor of tile (x,y):
@@ -119,5 +141,5 @@ function drawSpriteOr(ctx, name, frame, x, y, fallbackFn, opts) {
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { SPRITE_MANIFEST, sprite, drawSpriteOr };
+  module.exports = { SPRITE_MANIFEST, sprite, drawSpriteOr, walkFrameCount };
 }
