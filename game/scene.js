@@ -142,7 +142,7 @@ function spawnBurst(x, y, color) {
   }
 }
 
-const tylerVisual = { sx: null, sy: null, step: 0, facing: "e" };
+const tylerVisual = { sx: null, sy: null, step: 0, facing: "e", face4: "se", lastX: undefined, lastY: undefined };
 let owlBob = 0;
 
 function drawOwlFallback(ctx, ox, oy) {
@@ -560,6 +560,16 @@ function drawScene(ctx, state, ui) {
   const tt = isoPt(state.tyler.x, state.tyler.y);
   if (tylerVisual.sx === null) { tylerVisual.sx = tt.sx; tylerVisual.sy = tt.sy; }
   if (Math.abs(tt.sx - tylerVisual.sx) > 1) tylerVisual.facing = tt.sx < tylerVisual.sx ? "w" : "e";
+  // 4-way facing from tile movement (turnaround mapping: front art = SE, back art = NW)
+  if (tylerVisual.lastX === undefined) { tylerVisual.lastX = state.tyler.x; tylerVisual.lastY = state.tyler.y; }
+  const tdx = state.tyler.x - tylerVisual.lastX;
+  const tdy = state.tyler.y - tylerVisual.lastY;
+  if (tdx > 0) tylerVisual.face4 = "se";
+  else if (tdx < 0) tylerVisual.face4 = "nw";
+  else if (tdy > 0) tylerVisual.face4 = "sw";
+  else if (tdy < 0) tylerVisual.face4 = "ne";
+  tylerVisual.lastX = state.tyler.x;
+  tylerVisual.lastY = state.tyler.y;
   tylerVisual.sx += (tt.sx - tylerVisual.sx) * 0.18;
   tylerVisual.sy += (tt.sy - tylerVisual.sy) * 0.18;
   const moving = Math.abs(tt.sx - tylerVisual.sx) + Math.abs(tt.sy - tylerVisual.sy) > 1;
@@ -577,13 +587,16 @@ function drawScene(ctx, state, ui) {
       // sprite path: idle / walk / work frames, W-facing mirrored
       const working = !moving && state.objects.some((o) =>
         o.state === "running" && Math.abs(o.x - state.tyler.x) + Math.abs(o.y - state.tyler.y) === 1);
+      // 4-way: front set covers SE (as-is) and SW (mirrored); back set covers NW/NE.
+      const back = tylerVisual.face4 === "nw" || tylerVisual.face4 === "ne";
+      const walkFrame = Math.floor(tylerVisual.step) % 2;
       const tylerImg = moving
-        ? sprite("tyler_walk", Math.floor(tylerVisual.step) % 2)
+        ? (back ? sprite("tyler_back_walk", walkFrame) : null) || sprite("tyler_walk", walkFrame)
         : working
-          ? sprite("tyler_work", runFrame())
-          : sprite("tyler_idle");
+          ? sprite("tyler_work", runFrame()) // work pose is always front — he faces the machine
+          : (back ? sprite("tyler_back_idle") : null) || sprite("tyler_idle");
       if (tylerImg) {
-        const mirror = tylerVisual.facing === "w";
+        const mirror = tylerVisual.face4 === "sw" || tylerVisual.face4 === "ne";
         ctx.save();
         if (mirror) { ctx.translate(sx, 0); ctx.scale(-1, 1); ctx.translate(-sx, 0); }
         ctx.drawImage(tylerImg, sx - tylerImg.width / 2, sy - tylerImg.height - bob);

@@ -105,9 +105,11 @@ between frames.
 
 | File(s) | Size | Notes |
 |---|---|---|
-| `tyler_idle.png` | 34×62 | Tyler King, 15: green hoodie, tan work vest, per poster. Facing SE (toward camera-right). Code mirrors for W. |
-| `tyler_walk_a.png`, `tyler_walk_b.png` | 34×62 | walk cycle pair |
-| `tyler_work_a.png`, `tyler_work_b.png` | 34×62 | working at a machine (reaching/tool pose) |
+| `tyler_idle.png` | 40×70 | Tyler King, 15 — **canonical design per the tyler-turnaround-orange-v2 sheet**: curly high-top hair w/ faded sides, bright safety-orange bomber/hoodie (open zip over charcoal tee), charcoal cargo pants, orange work boots, insulated dark gloves, utility tool belt (pouch + wrench + screwdriver legible at the hips). Front-¾ view = SE facing; code mirrors for SW. |
+| `tyler_walk_a.png`, `tyler_walk_b.png` | 40×70 | walk cycle pair (front set) |
+| `tyler_work_a.png`, `tyler_work_b.png` | 46×70 | engineer pose reaching toward the machine, with the green "SYSTEM ONLINE" holographic diagnostic panel cue |
+| `tyler_back_idle.png` | 40×70 | back-¾ view = NW facing (code mirrors for NE). **Blackfox Studios fox mark on the hoodie back** — required. Hood hangs on shoulders. |
+| `tyler_back_walk_a.png`, `tyler_back_walk_b.png` | 40×70 | back walk cycle pair |
 | `stone_a.png`, `stone_b.png` | 24×24 | Stone: small white robotic owl, cyan eyes, wings slightly different per frame (hover) |
 | `grandpa.png`, `grandma.png` | 30×56 | optional porch flavor, static |
 
