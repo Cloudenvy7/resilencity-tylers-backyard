@@ -2,7 +2,7 @@
 
 **Blackfox Studios · Climate Jam 2026 · Sprint 2**
 A ground-up narrative of what was built, why, and how it changed shape along the way.
-Current as of 2026-07-13, commit `7901fb0`.
+Current as of 2026-07-14, commit `7901fb0` + Sprint 2 submission session.
 
 ---
 
@@ -131,3 +131,37 @@ The same mirrored-label issue repeated (confirmed via the E/W pair — the beak 
 - A sibling folder, `Resilencity Build By Antigravity - 07122026`, is a parallel AI attempt at this same repo. It's gitignored on purpose — don't un-ignore it or merge from it without re-reviewing, since its Tyler sprite slicing was found to have real defects.
 
 **Not yet built, and explicitly out of scope for Sprint 2 per the jam's own rules:** the Class A/B/C build-quality depth beyond the current pass/fail reliability roll, the reputation/sales enterprise layer, and the neighborhood-adoption ending reveal — all correctly Sprint 3 scope per the project's own Macro Chart priority tags, once those tags are treated as a planning guide rather than a status report. A FarmBot 8-direction animation sheet is sitting in Downloads, ready for the same slicing treatment whenever the next art pass happens.
+
+---
+
+## 16. Sprint 2 submission: preparing materials and getting the game live
+
+*2026-07-13 to 2026-07-14*
+
+With the playable build verified and committed, the session turned to producing the actual Sprint 2 submission package. The deadline was July 13 at 11:59 PM PDT.
+
+**Reviewing what we had vs. what the rubric needed.** The Sprint 2 rubric required: (a) a video of a prototype/proof-of-concept demonstrating core elements, (b) concepts or early drafts of aesthetic elements, and optionally (c) a way to try the prototype and a production plan link. The gameplay recording from §9 ("Surviving Nights With Solar and FarmBots.mp4") covered the video requirement. The 8-direction sprite sheets and 47 SVG assets covered aesthetics. What remained was the submission form itself, a downloadable build, and a production plan link.
+
+**Reviewing the production plan documents.** Two candidate documents were audited before deciding what to link:
+
+1. **Art Direction & Visual Development Record** (Google Doc) — a comprehensive design authorship record written by Andrew Powers tracing the project from 2022 paper sketchbooks through 2026 AI-assisted production. It establishes the canonical visual thesis (backyard vs. dump vs. city contrast, golden-hour palette, camera projection, Tyler and Stone character canon), the AI correction workflow (six-step process: sketch → constrain → generate → compare → correct → promote), and the five narrative scenarios (F through A, from crisis unchecked to full FarmBotVille transformation). Strong for explaining design intent and authorship; less strong as a milestone tracker.
+
+2. **Resilencity Macro Chart** (Google Sheets) — a three-tab production plan: the main feature list (31 rows, Priority 1–5, Sprint S2–Later, Status column), a Legend tab defining all column values (design pillars P1–P4, priority scale, status meanings), and a Sprint Tracker tab computing completion percentages automatically from the status column. Reading it confirmed Sprint 2 is 100% complete (14/14 Priority 1–3 items built), Sprint 3 is at 20% (2/10 started — the v0.2 map and token work), and the project is 64% complete overall.
+
+Two inaccuracies were found in the Macro Chart and corrected directly in the sheet before submitting: (1) the main tab footer still said "24-move crisis" — changed to "12-day crisis" to match the actual game; (2) the Sprint Tracker S2 deliverable said "Playable 24-move loop" — changed to "Playable 12-day loop." All other statuses matched the real code. The Macro Chart was chosen as the production plan link over the Art Bible because it directly answers what the rubric asks: scope, priorities, what can be cut, and milestones per sprint.
+
+**Creating a downloadable build.** The itch.io stretch goal asks for a way to try the prototype. The game is already live at `http://resilencity.blackfoxstudios.org/`, but itch.io also accepts a downloadable zip. A Python `zipfile` script packaged the entire `game/` directory — all JS, CSS, HTML, and the 161-file `assets/` folder — into `resilencity-tylers-backyard.zip` (0.5 MB), excluding `ART_SPEC.md` which is an internal document. The zip puts `index.html` at the root so players can unzip and open directly in Firefox (a note was added to the itch.io page that Chrome may block local asset loading, and Firefox is recommended for the download version).
+
+**Drafting the submission form.** The five required fields were finalized as follows:
+
+- **Production Plan:** Macro Chart Google Sheets link
+- **Game Engine, Platform, Format:** Custom HTML5 Canvas engine in vanilla JavaScript — no framework. Covers the isometric 2:1 tile grid, flood-fill power-network simulation, BFS pathfinding, day/night clock, and 3-tier community progression system. Art generated with ChatGPT, Gemini, and Claude (sprite sheets sliced to transparent PNGs), with Makko.ai planned for Sprint 3. Platform: browser, no install required.
+- **Team Name:** Blackfox Studios
+- **Primary Team Contact:** Andrew@blackfoxstudios.org
+- **Team or Project Change Explanation:** Explained that the Sprint 1 prototype was completely rebuilt from a menu-driven button UI into the current isometric 2.5D world after feedback that the original lacked the spatial "energy connects everything" feel. Core concept unchanged (Tyler → Bottle Loop → survive 12 days); format changed to match references Green With Energy and Tiny Life. Team unchanged: solo.
+
+**Tagline.** The itch.io short description field prompted the question of how to describe the game in one line. Several options were drafted, and Andrew landed on the one that best captures the game's design pillar P4 ("hope over doom — collapse is the opening"):
+
+> **"When the system falls, that's when we build."**
+
+This line also turned out to be the clearest single statement of the game's thesis and will carry forward as the project's primary tagline into Sprint 3 and beyond.
